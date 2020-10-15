@@ -16,7 +16,7 @@ class TestAddContact(unittest.TestCase):
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
         self.open_contact_page(wd)
-        self.create_contact(wd, Contact(firstname="Alex", lastname="Gubanov", nickname="Guban"))
+        self.create_contact(wd, Contact(firstname="Alex", lastname="Gubanov", nickname="Gubanov"))
         self.return_to_home_page(wd)
         self.logout(wd)
 
