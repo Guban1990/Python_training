@@ -26,6 +26,8 @@ class ContactHelper:
         self.open_contact_page()
         # fill contact firm
         self.fill_contact_form(contact)
+        wd.find_element_by_name("submit").click()
+        self.return_to_home_page()
 
     def edit_first_contact(self, contact):
         wd = self.app.wd
