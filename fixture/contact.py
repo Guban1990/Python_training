@@ -1,3 +1,6 @@
+from model.group import Contact
+
+
 class ContactHelper:
 
     def __init__(self, app):
@@ -16,18 +19,18 @@ class ContactHelper:
             wd.find_element_by_name(field_name).clear()
             wd.find_element_by_name(field_name).send_keys(text)
 
-    def return_to_home_page(self):
+    def return_to_home(self):
         # return to home page
         wd = self.app.wd
-        wd.find_element_by_link_text("home page").click()
+        wd.find_element_by_link_text("home").click()
 
     def create(self, contact):
         wd = self.app.wd
-        self.open_contact_page()
+        self.add_new_contact_page()
         # fill contact firm
         self.fill_contact_form(contact)
         wd.find_element_by_name("submit").click()
-        self.return_to_home_page()
+        self.return_to_home()
 
     def edit_first_contact(self, contact):
         wd = self.app.wd
@@ -37,7 +40,7 @@ class ContactHelper:
         self.fill_contact_form(contact)
         # submit update
         wd.find_element_by_xpath("//input[@name='update']").click()
-        self.return_to_home_page()
+        self.return_to_home()
 
     def delete_first_contact(self):
         wd = self.app.wd
@@ -47,12 +50,25 @@ class ContactHelper:
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
 
-    def open_contact_page(self):
+    def add_new_contact_page(self):
         wd = self.app.wd
         if not (wd.current_url.endswith("addressbook/") and len(wd.find_elements_by_name("add")) > 0):
             wd.find_element_by_link_text("add new").click()
 
     def count(self):
         wd = self.app.wd
-        self.open_contact_page()
+        self.add_new_contact_page()
         return len(wd.find_elements_by_name("selected[]"))
+
+    def get_contact_list(self):
+        wd = self.app.wd
+        self.return_to_home()
+        contacts = []
+        for element in wd.find_elements_by_xpath(".//tr[@name='entry']"):
+            # element in wd.find_elements_by_name("entry"):
+            # element in wd.find_elements_by_css_selector("td.center"):
+            lastname = element.find_element_by_xpath(".//td[2]").text
+            firstname = element.find_element_by_xpath(".//td[3]").text
+            id = element.find_element_by_name("selected[]").get_attribute("value")
+            contacts.append(Contact(firstname=firstname, lastname=lastname, id=id))
+        return contacts
