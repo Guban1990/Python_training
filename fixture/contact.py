@@ -39,13 +39,17 @@ class ContactHelper:
     def edit_contact_by_index(self, index, contact):
         wd = self.app.wd
         # open for editing
-        wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
+        self.select_edit_contact_by_index(index)
         # edit contact
         self.fill_contact_form(contact)
         # submit update
         wd.find_element_by_xpath("//input[@name='update']").click()
         self.return_to_home()
         self.contact_cache = None
+
+    def select_edit_contact_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_xpath("(//img[@alt='Edit'])")[index].click()
 
     def delete_first_contact(self):
         self.delete_contact_by_index(0)
