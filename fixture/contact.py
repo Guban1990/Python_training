@@ -14,7 +14,11 @@ class ContactHelper:
         self.change_field_value("address", contact.address)
         self.change_field_value("home", contact.homephone)
         self.change_field_value("work", contact.workphone)
+        self.change_field_value("mobile", contact.mobilephone)
+        self.change_field_value("phone2", contact.secondaryphone)
         self.change_field_value("email", contact.email)
+        self.change_field_value("email2", contact.email2)
+        self.change_field_value("email3", contact.email3)
 
     def change_field_value(self, field_name, text):
         wd = self.app.wd
@@ -119,6 +123,7 @@ class ContactHelper:
     def get_contact_info_from_edit_page(self, index):
         wd = self.app.wd
         # открытие страницы редактирования контакта
+        self.return_to_home()
         self.select_edit_contact_by_index(index)
         firstname = wd.find_element_by_name("firstname").get_attribute("value")
         lastname = wd.find_element_by_name("lastname").get_attribute("value")
