@@ -87,39 +87,6 @@ class ContactHelper:
         return len(wd.find_elements_by_name("selected[]"))
 
     contact_cache = None
-    """
-    def get_contact_list(self):
-        if self.contact_cache is None:
-            wd = self.app.wd
-            self.return_to_home()
-            self.contact_cache = []
-            for element in wd.find_elements_by_xpath(".//tr[@name='entry']"):
-                # element in wd.find_elements_by_name("entry"):
-                # element in wd.find_elements_by_css_selector("td.center"):
-                lastname = element.find_element_by_xpath(".//td[2]").text
-                firstname = element.find_element_by_xpath(".//td[3]").text
-                id = element.find_element_by_name("selected[]").get_attribute("value")
-                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, id=id))
-        return list(self.contact_cache)
-        """
-    """
-    def get_contact_list(self):
-        if self.contact_cache is None:
-            wd = self.app.wd
-            self.return_to_home()
-            self.contact_cache = []
-            for element in wd.find_elements_by_xpath(".//tr[@name='entry']"):
-                # element in wd.find_elements_by_name("entry"):
-                # element in wd.find_elements_by_css_selector("td.center"):
-                lastname = element.find_element_by_xpath(".//td[2]").text
-                firstname = element.find_element_by_xpath(".//td[3]").text
-                id = element.find_element_by_name("selected[]").get_attribute("value")
-                all_phones = element.find_element_by_xpath(".//td[6]").text
-                all_emails = element.find_element_by_xpath(".//td[5]").text
-                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, id=id, all_phones=all_phones,
-                                                  all_emails=all_emails))
-        return list(self.contact_cache)
-        """
 
     def get_contact_info_from_edit_page(self, index):
         wd = self.app.wd
