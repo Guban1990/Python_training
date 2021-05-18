@@ -13,7 +13,8 @@ class Group:
         return "%s:%s;%s;%s" % (self.id, self.name, self.header, self.footer)
 
     def __eq__(self, other):
-        return (self.id is None or other.id is None or self.id == other.id) and self.name == other.name
+        return (self.id is None or other.id is None or self.id == other.id) and (
+                    self.name == other.name or self.name[0:-1] == other.name)
 
     def id_or_max(self):
         if self.id:
@@ -48,7 +49,9 @@ class Contact:
         return "%s:%s:%s" % (self.id, self.lastname, self.firstname)
 
     def __eq__(self, other):
-        return (self.id is None or other.id is None or self.id == other.id) and self.lastname == other.lastname and self.firstname == other.firstname
+        return (self.id is None or other.id is None or self.id == other.id) and (
+                    self.lastname == other.lastname or self.lastname[0:-1] == other.lastname) \
+               and (self.firstname == other.firstname or self.firstname[0:-1] == other.firstname)
 
     def id_or_max(self):
         if self.id:
