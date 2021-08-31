@@ -28,6 +28,11 @@ class ContactHelper:
             wd.find_element_by_name(field_name).clear()
             wd.find_element_by_name(field_name).send_keys(text)
 
+    def open_home_page(self):
+        wd = self.app.wd
+        if not wd.current_url.endswith("addressbook/"):
+            wd.find_element_by_link_text("home").click()
+
     def return_to_home(self):
         # return to home page
         wd = self.app.wd
@@ -56,6 +61,23 @@ class ContactHelper:
         self.return_to_home()
         self.contact_cache = None
 
+    def edit_contact_by_id(self, id, contact):
+        wd = self.app.wd
+        # open for editing
+        self.open_contact_to_edit_by_id(id)
+        # edit contact
+        self.fill_contact_form(contact)
+        # submit update
+        wd.find_element_by_xpath("//input[@name='update']").click()
+        self.return_to_home()
+        self.contact_cache = None
+
+    def open_contact_to_edit_by_id(self, id):
+        wd = self.app.wd
+        self.open_home_page()
+#        wd.find_element_by_xpath(f"//a[@href='edit.php?id={id}']").click()
+        wd.find_element_by_xpath("//a[@href='edit.php?id=%s']" % id).click()
+
     def select_edit_contact_by_index(self, index):
         wd = self.app.wd
         wd.find_elements_by_xpath("(//img[@alt='Edit'])")[index].click()
@@ -72,9 +94,24 @@ class ContactHelper:
         wd.switch_to_alert().accept()
         self.contact_cache = None
 
+    def delete_contact_by_id(self, id):
+        wd = self.app.wd
+        self.open_home_page()
+        # select first contact
+        self.select_contact_by_id(id)
+        # submit deletion
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.switch_to_alert().accept()
+        self.return_to_home()
+        self.contact_cache = None
+
     def select_contact_by_index(self, index):
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
+
+    def select_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
 
     def add_new_contact_page(self):
         wd = self.app.wd
@@ -141,3 +178,4 @@ class ContactHelper:
         secondaryphone = re.search("P: (.*)", text).group(1)
         return Contact(homephone=homephone, workphone=workphone,
                        mobilephone=mobilephone, secondaryphone=secondaryphone)
+
